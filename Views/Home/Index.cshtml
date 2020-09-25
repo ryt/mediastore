@@ -1,0 +1,71 @@
+﻿@using mediastore.Models.DataModels;
+@{
+    ViewData["Title"] = "Browse" + ( String.IsNullOrEmpty(ViewBag.Teacher) ? "" : " - " + ViewBag.Teacher );
+    var listFiles = ViewBag.listFiles as List<Mediafile>;
+    var bucketName = ViewBag.bucketName;
+}
+    <main role="main">
+
+      <section class="jumbotron text-center mb-0">
+        <div class="container">
+          <h1 class="jumbotron-heading">Media Files</h1>
+          <p class="lead text-muted"> Upload and view media files.</p>
+          @if ( !String.IsNullOrEmpty(ViewBag.uploadedData) )
+          {
+              <div class="alert alert-success"><b>File successfully uploaded.</b></div>
+          }
+          <p>
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-row justify-content-md-center">
+                    <div class="col-5">
+                        <input class="form-control" placeholder="Search media library" value=""> 
+                    </div>
+                    <div class="col-3">
+                        <input class="upload-file mt-1" name="file" type="file">
+                    </div>
+                    <div class="col-2">
+                        <input type="hidden" name="submit" value="true">
+                        <button class="btn btn-primary upload-button hide" type="submit">
+                            <span class="bload hide spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 
+                            <span class="btxt">Upload</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+          </p>
+        </div>
+      </section>
+
+      <div class="album py-5 bg-light">
+        <div class="container">
+
+          <div class="row">
+            @if ( listFiles != null )
+            {
+                foreach ( var file in listFiles )
+                {
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <div class="card-body">
+                                <p class="card-text"></p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a href="/media/@file.Id" class="btn btn-sm btn-outline-secondary">@file.OriginalFileName</a>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                    </div>
+                                    <small class="text-muted">@file.HumanTime</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+          </div>
+
+          <pre class="data-pre">@Html.Raw(ViewBag.content)</pre>
+
+
+        </div>
+      </div>
+
+    </main>
