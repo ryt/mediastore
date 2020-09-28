@@ -47,7 +47,7 @@
                         <iframe src="@link" width="600" height="500"></iframe>
                     } else if ( (new[]{ "image/jpeg", "image/png", "image/gif" }).Contains(mediafile.ContentType, soi) ) {
                         <img src="@link" style="max-height:500px;">
-                    } else if ( mediafile.ContentType == "audio/mpeg" ) {
+                    } else if ( (new[]{ "audio/mpeg", "audio/ogg", "audio/wav" }).Contains(mediafile.ContentType, soi) ) {
                         <audio controls>
                             <source src="@link" type="audio/mpeg"> Your browser does not support HTML audio.
                         </audio>
