@@ -1,13 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using mediastore.Models;
 using Google.Cloud.Firestore;
 using Google.Cloud.Storage.V1;
 
@@ -35,11 +31,11 @@ namespace mediastore.Controllers
             QuerySnapshot allUsersQuerySnapshot = await allUsersQuery.GetSnapshotAsync();
             foreach (DocumentSnapshot documentSnapshot in allUsersQuerySnapshot.Documents)
             {
-                content += "<b>" + documentSnapshot.Id + ":</b>" + "<br>";
+                content += String.Format("<b>{0}:</b><br>", documentSnapshot.Id);
                 Dictionary<string, object> user = documentSnapshot.ToDictionary();
                 foreach (KeyValuePair<string, object> pair in user)
                 {
-                    content += " - " + pair.Key + " : " + pair.Value + "<br>";
+                    content += String.Format(" - {0} : {1}<br>", pair.Key, pair.Value);
                 }
             }
             content += "<hr>";
@@ -48,7 +44,7 @@ namespace mediastore.Controllers
             StorageClient storage = StorageClient.Create();
             foreach (var storageObject in storage.ListObjects(bucketName, ""))
             {
-                content += "<a href=\"https://storage.googleapis.com/" + bucketName + "/" + storageObject.Name + "\">" + storageObject.Name + "</a><br>";
+                content += String.Format("<a href=\"https://storage.googleapis.com/{0}/{1}\">{1}</a><br>", bucketName, storageObject.Name);
             }
 
 

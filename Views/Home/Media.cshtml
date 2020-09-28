@@ -3,6 +3,7 @@
     ViewData["title"] = "Player";
     var mediafile = ViewBag.mediafile as Mediafile;
     var link = mediafile != null ? String.Format("https://storage.googleapis.com/{0}/{1}", ViewBag.bucketName, mediafile.Id) : "";
+    var soi = StringComparer.OrdinalIgnoreCase;
 }
     <main role="main">
 
@@ -15,7 +16,7 @@
             } else {
                 if ( ViewBag.edit == true ) {
                     if ( ViewBag.submitted == true && ViewBag.editSuccess == true ) {
-                    <div class="alert alert-success">File edited</div>
+                    <div class="alert alert-success">File successfully edited <a href="/media/@mediafile.Id">[view]</a></div>
                     }
                     <form method="post" action="/media/@mediafile.Id/edit" class="text-left">
                         <div class="form-group">
@@ -42,9 +43,9 @@
                         <video style="max-height:500px;" controls><source src="@link" type="video/mp4">
                             Your browser does not support HTML video.
                         </video>
-                    } else if ( (new[]{ "application/pdf", "text/css", "text/html" }).Contains(mediafile.ContentType, StringComparer.OrdinalIgnoreCase) ) {
+                    } else if ( (new[]{ "application/pdf", "text/css", "text/html" }).Contains(mediafile.ContentType, soi) ) {
                         <iframe src="@link" width="600" height="500"></iframe>
-                    } else if ( mediafile.ContentType == "image/jpeg" ) {
+                    } else if ( (new[]{ "image/jpeg", "image/png", "image/gif" }).Contains(mediafile.ContentType, soi) ) {
                         <img src="@link" style="max-height:500px;">
                     } else if ( mediafile.ContentType == "audio/mpeg" ) {
                         <audio controls>
