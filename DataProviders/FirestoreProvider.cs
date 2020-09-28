@@ -19,6 +19,17 @@ namespace mediastore.DataProviders
             return document.Id;
         }
 
+        public async Task<Timestamp> UpdateMediafileByIdAsync(string id, string title)
+        {
+            Dictionary<FieldPath, object> updates = new Dictionary<FieldPath, object>
+            {
+                { new FieldPath("Title"), title }
+            };
+            var docRef = db.Collection("mediafiles").Document(id);
+            var document = await docRef.UpdateAsync(updates);
+            return document.UpdateTime;
+        }
+
         public async Task<List<Mediafile>> GetMediafilesByTeacherIdAsync(string teacherId)
         {
             var mediafiles = new List<Mediafile>();

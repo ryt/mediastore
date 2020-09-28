@@ -33,7 +33,7 @@ namespace mediastore.Controllers
             var currentTeacherId = Request.Cookies["teacher"]; // also in BaseController
 
 
-            // upload media file with associated teacher and rubric
+            // upload media file with associated teacher
             
             if ( Request.Method == "POST" && Request.Form.Files.Count > 0 ) 
             {
@@ -41,12 +41,12 @@ namespace mediastore.Controllers
                 var mediafile = new Mediafile
                 {
                     OriginalFileName = uploadedFile.FileName,
+                    Title = uploadedFile.FileName,
                     ContentType = uploadedFile.ContentType,
-                    TeacherId = currentTeacherId,
-                    RubricId = "rubric325"
+                    TeacherId = currentTeacherId
                 };
                 var mediafileId = await firestoreProvider.AddMediafileAsync(mediafile);
-                using (var memoryStream = new MemoryStream())
+                using ( var memoryStream = new MemoryStream() )
                 {
                     await uploadedFile.CopyToAsync(memoryStream);
                     var obj = new Storagefile
@@ -68,10 +68,10 @@ namespace mediastore.Controllers
 
             if ( !String.IsNullOrEmpty(currentTeacherId) ) {
                 var listFiles = await firestoreProvider.GetMediafilesByTeacherIdAsync(currentTeacherId);
-                ViewBag.bucketName = storageProvider.bucketName;
                 listFiles.Select(c => { c.HumanTime = Utility.RelativeDate(c.CreatedDateTime); return c; }).ToList();
                 listFiles.Sort((y, x) => DateTime.Compare(x.CreatedDateTime, y.CreatedDateTime)); // newest first
                 ViewBag.listFiles = listFiles;
+                ViewBag.bucketName = storageProvider.bucketName;
             }
 
 
@@ -91,6 +91,36 @@ namespace mediastore.Controllers
             Mediafile mediafile = await firestoreProvider.GetMediafileByIdAsync(mediaId);
             ViewBag.mediafile = mediafile;
             ViewBag.bucketName = storageProvider.bucketName;
+            return View();
+        }
+
+        [Route("media/{mediaId}/edit")]
+        public async Task<IActionResult> Media(string mediaId, string edit)
+        {
+            var currentTeacherId = Request.Cookies["teacher"];
+            Mediafile mediafile = await firestoreProvider.GetMediafileByIdAsync(mediaId);
+
+            if ( mediafile.TeacherId == currentTeacherId ) {
+
+                // edit media file
+
+                if ( Request.Method == "POST" &&  Request.Form["mediaEditSubmit"] == "true" ) {
+                    ViewBag.submitted = true;
+                    string title = Request.Form["mediaTitle"];
+                    mediafile.Title = title;
+                    var update = await firestoreProvider.UpdateMediafileByIdAsync(mediaId, title);
+                    if ( update != null ) {
+                        ViewBag.editSuccess = true;
+                    }
+                }
+
+                
+                ViewBag.edit = true;
+                ViewBag.mediafile = mediafile;
+                ViewBag.bucketName = storageProvider.bucketName;
+
+            }
+
             return View();
         }
 

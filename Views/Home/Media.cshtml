@@ -2,42 +2,71 @@
 @{
     ViewData["title"] = "Player";
     var mediafile = ViewBag.mediafile as Mediafile;
-    var link = String.Format("https://storage.googleapis.com/{0}/{1}", ViewBag.bucketName, mediafile.Id);
+    var link = mediafile != null ? String.Format("https://storage.googleapis.com/{0}/{1}", ViewBag.bucketName, mediafile.Id) : "";
 }
     <main role="main">
 
         <section class="jumbotron text-center mb-0">
         <div class="container">
             <div class="viewer">
-            @if ( String.IsNullOrEmpty(mediafile.Id) ) 
+            @if ( mediafile == null ) 
             {
                 <div class="message pb-2">No media file to show.</div>
             } else {
-                @if ( mediafile.ContentType == "video/mp4" ) {
-                    <video style="max-height:500px;" controls><source src="@link" type="video/mp4">
-                        Your browser does not support HTML video.
-                    </video>
-                } else if ( (new[]{ "application/pdf", "text/css", "text/html" }).Contains(mediafile.ContentType, StringComparer.OrdinalIgnoreCase) ) {
-                    <iframe src="@link" width="600" height="500"></iframe>
-                } else if ( mediafile.ContentType == "image/jpeg" ) {
-                    <img src="@link" style="max-height:500px;">
-                } else if ( mediafile.ContentType == "audio/mpeg" ) {
-                    <audio controls>
-                        <source src="@link" type="audio/mpeg"> Your browser does not support HTML audio.
-                    </audio>
+                @if ( ViewBag.edit == true ) {
+                    if ( ViewBag.submitted == true && ViewBag.editSuccess == true ) {
+                    <div class="alert alert-success">File edited</div>
+                    }
+                    <form method="post" action="/media/@mediafile.Id/edit" class="text-left">
+                        <div class="form-group">
+                            <label><b>Editing:</b></label>
+                            <input type="text" disabled class="form-control" value="@mediafile.OriginalFileName">
+                        </div>
+                        <div class="form-group">
+                            <label for="mediaTitle">Title</label>
+                            <input type="text" class="form-control" id="mediaTitle" name="mediaTitle" placeholder="@mediafile.OriginalFileName" value="@mediafile.Title">
+                        </div>
+                        <div class="form-group">
+                            <label><b>Created On:</b></label>
+                            <input type="text" disabled class="form-control" value="@mediafile.CreatedDateTime">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="mediaPublic" checked>
+                            <label class="form-check-label" for="mediaPublic">Public</label>
+                        </div>
+                        <input type="hidden" name="mediaEditSubmit" value="true">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                } else {
+                    if ( mediafile.ContentType == "video/mp4" ) {
+                        <video style="max-height:500px;" controls><source src="@link" type="video/mp4">
+                            Your browser does not support HTML video.
+                        </video>
+                    } else if ( (new[]{ "application/pdf", "text/css", "text/html" }).Contains(mediafile.ContentType, StringComparer.OrdinalIgnoreCase) ) {
+                        <iframe src="@link" width="600" height="500"></iframe>
+                    } else if ( mediafile.ContentType == "image/jpeg" ) {
+                        <img src="@link" style="max-height:500px;">
+                    } else if ( mediafile.ContentType == "audio/mpeg" ) {
+                        <audio controls>
+                            <source src="@link" type="audio/mpeg"> Your browser does not support HTML audio.
+                        </audio>
+                    }
+                    if ( !String.IsNullOrEmpty(mediafile.Title) ) {
+                    <h3 class="mt-4">@mediafile.Title</h3>
+                    }
+                    <table class="table mt-4">
+                        <tr>
+                            <td><b>Original File Name</b></td>
+                            <td><b>Content Type</b></td>
+                            <td><b>Uploaded On</b></td>
+                        </tr>
+                        <tr>
+                            <td>@mediafile.OriginalFileName</td>
+                            <td>@mediafile.ContentType</td>
+                            <td>@mediafile.CreatedDateTime</td>
+                        </tr>
+                    </table>
                 }
-                <table class="table mt-4">
-                    <tr>
-                        <td><b>Original File Name</b></td>
-                        <td><b>Content Type</b></td>
-                        <td><b>Uploaded On</b></td>
-                    </tr>
-                    <tr>
-                        <td>@mediafile.OriginalFileName</td>
-                        <td>@mediafile.ContentType</td>
-                        <td>@mediafile.CreatedDateTime</td>
-                    </tr>
-                </table>
             }
             </div>
         </div>

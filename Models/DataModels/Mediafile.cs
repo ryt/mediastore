@@ -13,13 +13,13 @@ namespace mediastore.Models.DataModels
         public string OriginalFileName { get; set; }
 
         [FirestoreProperty]
+        public string Title { get; set; }
+
+        [FirestoreProperty]
         public string ContentType { get; set; }
 
         [FirestoreProperty]
         public string TeacherId { get; set; }
-
-        [FirestoreProperty]
-        public string RubricId { get; set; }
 
         [FirestoreDocumentCreateTimestamp]
         public DateTime CreatedDateTime { get; set; }

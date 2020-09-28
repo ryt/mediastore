@@ -50,8 +50,8 @@
                                 <p class="card-text"></p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a href="/media/@file.Id" class="btn btn-sm btn-outline-secondary">@file.OriginalFileName</a>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                        <a href="/media/@file.Id" class="btn btn-sm btn-outline-secondary">@Html.Raw( String.IsNullOrEmpty(file.Title) ? file.OriginalFileName : file.Title )</a>
+                                        <a href="/media/@file.Id/edit" class="btn btn-sm btn-outline-secondary">Edit</a>
                                     </div>
                                     <small class="text-muted">@file.HumanTime</small>
                                 </div>
