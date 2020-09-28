@@ -88,7 +88,11 @@ namespace mediastore.Controllers
         [Route("media/{mediaId}")]
         public async Task<IActionResult> Media(string mediaId)
         {
+            var currentTeacherId = Request.Cookies["teacher"];
             Mediafile mediafile = await firestoreProvider.GetMediafileByIdAsync(mediaId);
+            if ( mediafile.TeacherId == currentTeacherId ) {
+                ViewBag.editLink = true;
+            }
             ViewBag.mediafile = mediafile;
             ViewBag.bucketName = storageProvider.bucketName;
             return View();

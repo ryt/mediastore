@@ -21,7 +21,7 @@ namespace mediastore.DataProviders
 
         public async Task<Timestamp> UpdateMediafileByIdAsync(string id, string title)
         {
-            Dictionary<FieldPath, object> updates = new Dictionary<FieldPath, object>
+            var updates = new Dictionary<FieldPath, object>
             {
                 { new FieldPath("Title"), title }
             };

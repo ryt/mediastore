@@ -13,7 +13,7 @@
             {
                 <div class="message pb-2">No media file to show.</div>
             } else {
-                @if ( ViewBag.edit == true ) {
+                if ( ViewBag.edit == true ) {
                     if ( ViewBag.submitted == true && ViewBag.editSuccess == true ) {
                     <div class="alert alert-success">File edited</div>
                     }
@@ -23,7 +23,7 @@
                             <input type="text" disabled class="form-control" value="@mediafile.OriginalFileName">
                         </div>
                         <div class="form-group">
-                            <label for="mediaTitle">Title</label>
+                            <label for="mediaTitle"><b>Title:</b></label>
                             <input type="text" class="form-control" id="mediaTitle" name="mediaTitle" placeholder="@mediafile.OriginalFileName" value="@mediafile.Title">
                         </div>
                         <div class="form-group">
@@ -52,7 +52,7 @@
                         </audio>
                     }
                     if ( !String.IsNullOrEmpty(mediafile.Title) ) {
-                    <h3 class="mt-4">@mediafile.Title</h3>
+                    <h3 class="mt-4">@mediafile.Title <a href="/media/@mediafile.Id/edit"><sup style="font-size:13px;">[Edit]</sup></a></h3>
                     }
                     <table class="table mt-4">
                         <tr>
