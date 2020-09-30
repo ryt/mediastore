@@ -8,12 +8,14 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Google.Cloud.Diagnostics.AspNetCore;
 
+
 namespace mediastore
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "mediastore-59dfdf080b07.json");
             CreateHostBuilder(args).Build().Run();
         }
 

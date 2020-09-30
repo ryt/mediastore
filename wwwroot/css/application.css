@@ -1,8 +1,8 @@
 ﻿/* application.css v1 */
 
-html { font-size: 14px; }
-@media (min-width: 768px) {
-  html { font-size: 16px; }
+html { font-size:14px; }
+@media (min-width:768px) {
+  html { font-size:16px; }
 }
 
 .container { max-width: 960px; }
@@ -15,3 +15,6 @@ html { font-size: 14px; }
 
 .hide { display:none; }
 .data-pre { padding:20px;border-radius:5px;border:1px solid #ddd;background:#eee; }
+
+.media-multi { max-width:100%;max-height:500px; }
+.media-frame { max-width:100%;width:600px;height:500px;border:1px solid #ccc; }
