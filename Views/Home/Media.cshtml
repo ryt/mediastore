@@ -40,15 +40,15 @@
                     </form>
                 } else {
                     if ( mediafile.ContentType == "video/mp4" ) {
-                        <video class="media-multi" controls><source src="@link" type="video/mp4">
-                            Your browser does not support HTML video.
+                        <video id="media-video" class="media-player video-js media-video vjs-default-skin vjs-big-play-centered" controls preload="auto" data-setup="{}">
+                            <source src="@link" type="video/mp4"> Your browser does not support HTML video.
                         </video>
                     } else if ( (new[]{ "application/pdf", "text/css", "text/html" }).Contains(mediafile.ContentType, soi) ) {
-                        <iframe src="@link" class="media-frame"></iframe>
+                        <iframe src="@link" class="media-frame media-player"></iframe>
                     } else if ( (new[]{ "image/jpeg", "image/png", "image/gif" }).Contains(mediafile.ContentType, soi) ) {
-                        <img src="@link" class="media-multi">
+                        <img src="@link" class="media-image">
                     } else if ( (new[]{ "audio/mpeg", "audio/ogg", "audio/wav" }).Contains(mediafile.ContentType, soi) ) {
-                        <audio controls>
+                        <audio id="media-video" poster="/images/music.png" class="media-player video-js media-video vjs-default-skin vjs-big-play-centered" controls preload="auto" data-setup="{}">
                             <source src="@link" type="audio/mpeg"> Your browser does not support HTML audio.
                         </audio>
                     }
@@ -67,6 +67,7 @@
                             <td>@mediafile.CreatedDateTime</td>
                         </tr>
                     </table>
+                    <pre class="data-pre mt-2"></pre>
                 }
             }
             </div>

@@ -16,5 +16,7 @@ html { font-size:14px; }
 .hide { display:none; }
 .data-pre { padding:20px;border-radius:5px;border:1px solid #ddd;background:#eee; }
 
-.media-multi { max-width:100%;max-height:500px; }
-.media-frame { max-width:100%;width:600px;height:500px;border:1px solid #ccc; }
+.media-player { margin:0 auto; }
+.media-video { max-width:100%;max-height:500px;width:640px;height:360px; }
+.media-image { max-width:100%;max-height:500px; }
+.media-frame { max-width:100%;width:600px;height:500px;border:1px solid #ccc;background:#fff; }

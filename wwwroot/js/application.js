@@ -22,6 +22,10 @@ function getCookie(name) {
     return "";
 }
 
+function prelog(str) {
+    $(".data-pre").html(str);
+}
+
 $(document).ready(function(){
 
     $(".upload-file").change(function(){
@@ -45,5 +49,48 @@ $(document).ready(function(){
             window.location.reload();
         }
     });
+
+    var trackStart = new Date();
+    
+    if ( $("#media-video").length ) {
+
+        var player = videojs("media-video");
+
+        player.ready(function() {
+        
+            prelog("Player has loaded.");
+
+            this.on('play', function(){
+                prelog("Player is playing. Started at: " + (Math.round(this.currentTime()*100)/100) + ".");
+            });
+
+            this.on('pause', function(){
+                prelog("Player is paused.");
+            });
+
+            this.on('ended', function(){
+                prelog("Player has ended.");
+            });
+
+        });
+    }
+
+    $(".media-frame").each(function(){
+        prelog("Document has loaded.");
+    });
+
+    $(".media-image").each(function(){
+        prelog("Image has loaded.");
+    });
+
+    $(window).on("beforeunload", function() {
+        var trackEnd = new Date();
+        var timeSpent = trackEnd - trackStart;
+            timeSpent /= 1000;
+            timeSpent = Math.round(timeSpent*100)/100;
+        if ( $(".media-player").length ) {
+            prelog("Total time spent: " + timeSpent);
+        }
+     });
 
 });
